@@ -27,11 +27,21 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Check IP
+        run: hostname -I
+
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
           pip cache purge
           pip install .[dev]
+
+      - name: Debug Environment Variables
+        run: |
+          echo "CUSTOM_RULES_DIR: ${{ env.CUSTOM_RULES_DIR }}"
+          echo "DR_CLOUD_ID: ${{ secrets.CLOUD_ID }}"
+          echo "DR_KIBANA_USER: ${{ secrets.KIBANA_USERNAME }}"
+          echo "DR_KIBANA_PASSWORD: ${{ secrets.KIBANA_PASSWORD }}"
 
       - name: Export Rules from Elastic Security and Import Rules to TOML
         run: |
